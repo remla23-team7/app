@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
+    "axios": "^1.4.0",
     "core-js": "^3.29.0",
+    "relma23-team7-version-util-lib-trial": "^0.0.1",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
