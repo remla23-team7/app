@@ -1,7 +1,7 @@
 <template>
-  <HelloWorld />
+  <ReviewBox />
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+  import ReviewBox from '@/components/ReviewBox.vue'
 </script>
