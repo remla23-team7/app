@@ -6,7 +6,7 @@
   </v-app-bar>
 </template>
 
-<script lang="ts" setup>
+<script lang="js" setup>
 import VersionUtil from 'relma23-team7-version-util-lib-trial';
 import {ref} from "vue";
 
