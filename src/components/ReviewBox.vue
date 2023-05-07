@@ -8,7 +8,7 @@
 
           <v-card-text>
             <v-row justify="center">
-              <v-col cols="12" md="8">
+              <v-col cols="12" md="10">
                 <v-textarea v-model="review" auto-grow variant="outlined"/>
               </v-col>
             </v-row>
@@ -35,8 +35,23 @@
           indeterminate
         ></v-progress-circular>
       </v-col>
-      <v-col cols="3" v-else>
-        <span class="text-h4">{{ result }}</span>
+      <v-col v-else cols="12">
+        <template v-if="result">
+          <v-col cols="12" class="text-center pa-0 ma-0">
+            <v-icon color="success" size="200">mdi-emoticon-happy</v-icon>
+          </v-col>
+          <v-col cols="12" class="text-center pa-0 ma-0">
+            <span class="text-success text-h4 font-weight-bold">POSITIVE</span>
+          </v-col>
+        </template>
+        <template v-else>
+            <v-col cols="12" class="text-center pa-0 ma-0">
+              <v-icon color="error" size="200">mdi-emoticon-sad</v-icon>
+            </v-col>
+            <v-col cols="12" class="text-center pa-0 ma-0">
+              <span class="text-error text-h4 font-weight-bold">NEGATIVE</span>
+            </v-col>
+        </template>
       </v-col>
     </v-row>
   </v-container>
@@ -55,18 +70,17 @@ import axios from 'axios';
 
 var isLoading = ref<boolean>(false);
 var review = ref<string>("");
-var result = ref<string>("");
+var result = ref<boolean>(false);
 
 const sendRequest = async () => {
   isLoading.value = true;
   try {
-    console.log("text", review.value)
     const response = await axios.post('http://localhost:5000/', {"msg": review.value});
     const prediction = response.data.prediction;
     if (prediction === "positive") {
-      result.value = ":)";
+      result.value = true;
     } else {
-      result.value = ":(";
+      result.value = false;
     }
     isLoading.value = false;
   } catch (error) {
