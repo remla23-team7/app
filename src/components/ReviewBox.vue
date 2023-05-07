@@ -61,8 +61,13 @@ const sendRequest = async () => {
   isLoading.value = true;
   try {
     console.log("text", review.value)
-    const response = await axios.post('localhost:8080/', {"msg": review.value});
-    result.value = response.data;
+    const response = await axios.post('http://localhost:5000/', {"msg": review.value});
+    const prediction = response.data.prediction;
+    if (prediction === "positive") {
+      result.value = ":)";
+    } else {
+      result.value = ":(";
+    }
     isLoading.value = false;
   } catch (error) {
     isLoading.value = false;
