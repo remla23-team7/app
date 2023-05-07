@@ -35,7 +35,7 @@
           indeterminate
         ></v-progress-circular>
       </v-col>
-      <v-col v-else cols="12">
+      <v-col v-else v-if="loaded" cols="12">
         <template v-if="result">
           <v-col cols="12" class="text-center pa-0 ma-0">
             <v-icon color="success" size="200">mdi-emoticon-happy</v-icon>
@@ -68,9 +68,11 @@ import {ref} from 'vue';
 import axios from 'axios';
 
 
+var loaded = ref<boolean>(false);
 var isLoading = ref<boolean>(false);
 var review = ref<string>("");
 var result = ref<boolean>(false);
+
 
 const sendRequest = async () => {
   isLoading.value = true;
@@ -83,6 +85,7 @@ const sendRequest = async () => {
       result.value = false;
     }
     isLoading.value = false;
+    loaded.value = true;
   } catch (error) {
     isLoading.value = false;
     console.error(error);
