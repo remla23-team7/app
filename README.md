@@ -18,13 +18,15 @@ pnpm install
 ```
 # yarn
 yarn dev
+node src/monitoring/prometheus.js
 
-# npm
+# npm - Use this to run both frontend + Prometheus monitoring
 npm run dev
 
 # pnpm
 pnpm dev
 ```
+
 
 ### Compiles and minifies for production
 
