@@ -15,6 +15,7 @@
     "axios": "^1.4.0",
     "concurrently": "^8.0.1",
     "core-js": "^3.29.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "prom-client": "^14.2.0",
     "relma23-team7-version-util-lib-trial": "^0.0.59",
