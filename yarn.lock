@@ -2289,10 +2289,10 @@ regenerator-runtime@^0.13.11:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
   integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
-relma23-team7-version-util-lib-trial@^0.0.59:
-  version "0.0.59"
-  resolved "https://registry.yarnpkg.com/relma23-team7-version-util-lib-trial/-/relma23-team7-version-util-lib-trial-0.0.59.tgz#28f7f71fb77ae30d93c7de0126a5ef645b8ac6c0"
-  integrity sha512-BiOazNmQZfofRMTj1OfauDkdJTzXX5Di9SFzu9yceW8EujJ0gd/FaJJWpXmFErNKyjXltNAYQIrB1msO/S+1tA==
+relma23-team7-version-util-lib@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/relma23-team7-version-util-lib/-/relma23-team7-version-util-lib-0.0.7.tgz#d62334500a1bd48d4784409116b220237e2cc67f"
+  integrity sha512-lHWLe35ta4fVanKaMAu4RngdwvRw6z9mqxUi7ez3TGjPt/NhcQ18BFePhZZFlOW8237hJugxERJ1pbxNCrgU2Q==
   dependencies:
     terser-webpack-plugin "^5.3.8"
     webpack "^5.82.0"
