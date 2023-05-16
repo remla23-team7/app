@@ -34,7 +34,7 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 
 # Expose port 80 for Nginx and port 3001 for Prometheus
-EXPOSE 80:80 3001:3001
+EXPOSE 80 3001
 
 # Start Nginx and the Prometheus.js file
 CMD ["sh", "-c", "nginx -g 'daemon off;' & node prometheus.js"]
