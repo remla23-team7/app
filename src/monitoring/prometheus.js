@@ -1,5 +1,5 @@
 const express = require('express');
-const {collectDefaultMetrics, Counter, Registry, Summary, Histogram, Gauge, sum} = require('prom-client');
+const {collectDefaultMetrics, Counter, Registry, Summary, Histogram, Gauge} = require('prom-client');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 

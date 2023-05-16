@@ -26,7 +26,7 @@
               <v-row justify="center" class="ma-0 pa-0">
                 <v-col cols="12" class="text-center ma-0 pa-0">
                   <span
-                    class="text-sm-subtitle-1 font-weight-bold">Please rate the service on a rate from 1 to 5:</span>
+                    class="text-sm-subtitle-1 font-weight-bold">Please rate the service on a scale from 1 to 5:</span>
                 </v-col>
 
                 <v-col cols="12" class="text-center">
