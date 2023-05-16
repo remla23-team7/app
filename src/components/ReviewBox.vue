@@ -5,24 +5,49 @@
         <v-card elevation="12" rounded>
 
           <v-card-title>Your Review</v-card-title>
+          <v-form v-model="formValid">
+            <v-card-text>
 
-          <v-card-text>
-            <v-row justify="center">
-              <v-col cols="12" md="10">
-                <v-textarea v-model="review" auto-grow variant="outlined"/>
-              </v-col>
-            </v-row>
-          </v-card-text>
+              <v-row justify="center">
+                <v-col cols="12" md="10">
+                  <v-textarea v-model="review" :rules="textValidation" auto-grow variant="outlined"/>
+                </v-col>
+              </v-row>
 
-          <v-card-actions>
-            <v-row justify="end">
-              <v-btn class="ma-5" size="large" rounded ripple @click="sendRequest" :loading="isLoading">
-                Analyze
-                <v-icon size="small" end icon="mdi-send"/>
-              </v-btn>
-            </v-row>
-          </v-card-actions>
 
+              <v-row justify="center" class="ma-0 pa-0">
+                <v-col cols="12" class="text-center ma-0 pa-0">
+                  <span
+                    class="text-sm-subtitle-1 font-weight-bold">Please rate the service on a rate from 1 to 5:</span>
+                </v-col>
+
+                <v-col cols="12" class="text-center">
+                  <v-rating
+                    v-model="starsNo"
+                    empty-icon="mdi-star-outline"
+                    full-icon="mdi-star"
+                    half-icon="mdi-star-half"
+                    half-increments
+                    color="review_star"
+                    size="x-large"
+                    :item-labels="['Very Dissatisfied', '', '', '', 'Very Satisfied']"
+                    item-label-position="bottom"
+                    hover
+                  ></v-rating>
+                </v-col>
+              </v-row>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-row justify="end">
+                <v-btn class="ma-5" size="large" :disabled="!formValid" rounded ripple @click="sendRequest"
+                       :loading="isLoading">
+                  Analyze
+                  <v-icon size="small" end icon="mdi-send"/>
+                </v-btn>
+              </v-row>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
@@ -54,6 +79,11 @@
         </template>
       </v-col>
     </v-row>
+
+    <v-row justify="center" v-if="result">
+      <v-col cols="auto">Rate</v-col>
+
+    </v-row>
   </v-container>
 
 </template>
@@ -68,7 +98,15 @@ import {ref} from 'vue';
 import axios from 'axios';
 
 const METRICS_URL = 'http://localhost:3001/'
-const MODEL_URL = 'http://localhost:5000/'
+const MODEL_URL = 'http://192.168.1.139:5000/'
+
+// form validation
+var formValid = ref<boolean>(false);
+formValid.value = false
+const textValidation = [(value) => value.length < 10 ? 'Your review should have at least 10 characters.' : true]
+
+// stars review
+var starsNo = ref<number>(0);
 
 
 var loaded = ref<boolean>(false);
@@ -91,7 +129,7 @@ const sendRequest = async () => {
     // track performance
     const start = performance.now();
 
-    const response = await axios.post('http://localhost:5000/', {"msg": review.value});
+    const response = await axios.post(MODEL_URL, {"msg": review.value});
 
     const end = performance.now()
     const duration = end - start
