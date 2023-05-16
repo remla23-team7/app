@@ -120,7 +120,12 @@ app.get('/metrics', async (req, res) => {
   const correctReviews = bucketValues.find(value => value.labels.result === 'Correct_Reviews' && value.metricName === 'review_correctness_distribution_sum');
   const totalReviews = bucketValues.find(value => value.labels.result === 'Total_Reviews' && value.metricName === 'review_correctness_distribution_sum');
 
-  accuracyGauge.set(correctReviews.value / totalReviews.value);
+  try {
+    accuracyGauge.set(correctReviews.value / totalReviews.value);
+  } catch (err) {
+    //in case that there is no correct review or no reviews at all
+    accuracyGauge.set(0);
+  }
 
 
   try {

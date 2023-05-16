@@ -5,8 +5,16 @@
         <v-card elevation="12" rounded>
 
           <v-card-title>Your Review</v-card-title>
-          <v-form v-model="formValid">
+          <v-form v-model="formValid" :disabled="disableForm">
             <v-card-text>
+
+              <v-row v-if="disableForm" justify="center">
+                <v-col cols="2">
+                  <v-btn rounded @click="newReview">
+                    <v-icon left>mdi-refresh</v-icon>
+                    <span>Submit Another Review</span></v-btn>
+                </v-col>
+              </v-row>
 
               <v-row justify="center">
                 <v-col cols="12" md="10">
@@ -33,6 +41,7 @@
                     :item-labels="['Very Dissatisfied', '', '', '', 'Very Satisfied']"
                     item-label-position="bottom"
                     hover
+                    :disabled="disableForm"
                   ></v-rating>
                 </v-col>
               </v-row>
@@ -40,7 +49,8 @@
 
             <v-card-actions>
               <v-row justify="end">
-                <v-btn class="ma-5" size="large" :disabled="!formValid" rounded ripple @click="sendRequest"
+                <v-btn class="ma-5" size="large" :disabled="!formValid || starsNo === 0 || disableForm" rounded ripple
+                       @click="sendRequest"
                        :loading="isLoading">
                   Analyze
                   <v-icon size="small" end icon="mdi-send"/>
@@ -60,30 +70,31 @@
           indeterminate
         ></v-progress-circular>
       </v-col>
-      <v-col v-if="loaded && !isLoading" cols="12">
-        <template v-if="result">
-          <v-col cols="12" class="text-center pa-0 ma-0">
-            <v-icon color="success" size="200">mdi-emoticon-happy</v-icon>
-          </v-col>
-          <v-col cols="12" class="text-center pa-0 ma-0">
-            <span class="text-success text-h4 font-weight-bold">POSITIVE</span>
-          </v-col>
-        </template>
-        <template v-else>
-          <v-col cols="12" class="text-center pa-0 ma-0">
-            <v-icon color="error" size="200">mdi-emoticon-sad</v-icon>
-          </v-col>
-          <v-col cols="12" class="text-center pa-0 ma-0">
-            <span class="text-error text-h4 font-weight-bold">NEGATIVE</span>
-          </v-col>
-        </template>
+      <v-col v-if="loaded && !isLoading" cols="2">
+        <v-card elevation="10">
+          <v-card-title class="text-center text-h5">
+            Our Prediction:
+          </v-card-title>
+          <template v-if="result">
+            <v-col cols="12" class="text-center pa-0 ma-0">
+              <v-icon color="success" size="200">mdi-emoticon-happy</v-icon>
+            </v-col>
+            <v-col cols="12" class="text-center pa-0 ma-0">
+              <span class="text-success text-h4 font-weight-bold">POSITIVE</span>
+            </v-col>
+          </template>
+          <template v-else>
+            <v-col cols="12" class="text-center pa-0 ma-0">
+              <v-icon color="error" size="200">mdi-emoticon-sad</v-icon>
+            </v-col>
+            <v-col cols="12" class="text-center pa-0 ma-0">
+              <span class="text-error text-h4 font-weight-bold">NEGATIVE</span>
+            </v-col>
+          </template>
+        </v-card>
       </v-col>
     </v-row>
 
-    <v-row justify="center" v-if="result">
-      <v-col cols="auto">Rate</v-col>
-
-    </v-row>
   </v-container>
 
 </template>
@@ -102,12 +113,11 @@ const MODEL_URL = 'http://192.168.1.139:5000/'
 
 // form validation
 var formValid = ref<boolean>(false);
-formValid.value = false
 const textValidation = [(value) => value.length < 10 ? 'Your review should have at least 10 characters.' : true]
+var disableForm = ref<boolean>(false);
 
 // stars review
 var starsNo = ref<number>(0);
-
 
 var loaded = ref<boolean>(false);
 var isLoading = ref<boolean>(false);
@@ -123,6 +133,23 @@ const pushResponseTimeMetrics = async (duration) => {
   }
 }
 
+const newReview = async () => {
+  review.value = ""
+  result.value = false
+  loaded.value = false
+  starsNo.value = 0
+  disableForm.value = false
+}
+
+const pushCorrectnessMetrics = async (rating, prediction) => {
+  try {
+    await axios.post(METRICS_URL + 'reviews', {user_predict: rating, predicted: prediction});
+  } catch (err) {
+    console.log("Reviews Metrics Push Unsuccessful");
+    console.log(err)
+  }
+}
+
 const sendRequest = async () => {
   isLoading.value = true;
   try {
@@ -130,7 +157,6 @@ const sendRequest = async () => {
     const start = performance.now();
 
     const response = await axios.post(MODEL_URL, {"msg": review.value});
-
     const end = performance.now()
     const duration = end - start
 
@@ -145,6 +171,12 @@ const sendRequest = async () => {
 
     // push the review time metrics
     pushResponseTimeMetrics(duration)
+
+    // push model accuracy with user input metrics
+    pushCorrectnessMetrics(starsNo.value, prediction)
+
+    // disable form until reset
+    disableForm.value = true
 
   } catch (error) {
     isLoading.value = false;
