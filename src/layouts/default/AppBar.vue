@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import VersionUtil from 'relma23-team7-version-util-lib-trial';
+import VersionUtil from 'relma23-team7-version-util-lib';
 import {ref} from "vue";
 
 const version = ref('');
