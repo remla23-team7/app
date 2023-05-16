@@ -141,6 +141,18 @@ const newReview = async () => {
   disableForm.value = false
 }
 
+const newRequestMetric = async () => {
+  try {
+    await axios.post(METRICS_URL + 'total-req');
+  } catch (err) {
+    console.log("Total Request Metric Push Unsuccessful");
+    console.log(err)
+  }
+}
+
+//initial metric, every time the app opens
+newRequestMetric()
+
 const pushCorrectnessMetrics = async (rating, prediction) => {
   try {
     await axios.post(METRICS_URL + 'reviews', {user_predict: rating, predicted: prediction});
@@ -149,6 +161,8 @@ const pushCorrectnessMetrics = async (rating, prediction) => {
     console.log(err)
   }
 }
+
+
 
 const sendRequest = async () => {
   isLoading.value = true;
