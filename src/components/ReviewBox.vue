@@ -109,7 +109,7 @@ import {ref} from 'vue';
 import axios from 'axios';
 
 const METRICS_URL = 'http://localhost:3001/'
-const MODEL_URL = 'http://192.168.1.139:5000/'
+const MODEL_URL = 'http://localhost:5000/'
 
 // form validation
 var formValid = ref<boolean>(false);
